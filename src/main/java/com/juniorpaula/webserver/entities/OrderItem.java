@@ -2,6 +2,7 @@ package com.juniorpaula.webserver.entities;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.juniorpaula.webserver.entities.pk.OrderItemPK;
 
 import jakarta.persistence.EmbeddedId;
@@ -15,7 +16,7 @@ public class OrderItem implements Serializable {
   private static final long serialVersionUID = 1L;
 
   @EmbeddedId
-  private OrderItemPK id;
+  private final OrderItemPK id = new OrderItemPK();
 
   private Integer quantity;
 
@@ -31,6 +32,7 @@ public class OrderItem implements Serializable {
     this.price = price;
   }
 
+  @JsonIgnore
   public Order getOrder() {
     return id.getOrder();
   }
