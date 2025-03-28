@@ -1,5 +1,7 @@
 package com.juniorpaula.webserver.dto;
 
-public record  RegisterDTO(String name, String email, String phone, String password) {
+import com.juniorpaula.webserver.entities.enums.UserRole;
+
+public record  RegisterDTO(String name, String email, String phone, String password, UserRole role) {
 
 }

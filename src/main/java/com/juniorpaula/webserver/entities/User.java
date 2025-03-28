@@ -41,12 +41,13 @@ public class User implements UserDetails {
   public User() {
   }
 
-  public User(Long id, String name, String email, String phone, String password) {
+  public User(Long id, String name, String email, String phone, String password, UserRole role) {
     Id = id;
     this.name = name;
     this.email = email;
     this.phone = phone;
     this.password = password;
+    this.role = role;
   }
 
   public Long getId() {
@@ -88,6 +89,14 @@ public class User implements UserDetails {
 
   public void setPassword(String password) {
     this.password = password;
+  }
+
+  public UserRole getRole() {
+    return role;
+  }
+
+  public void setRole(UserRole role) {
+    this.role = role;
   }
 
   public List<Order> getOrders() {

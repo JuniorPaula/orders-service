@@ -45,7 +45,7 @@ public class AuthenticationResouce {
       return ResponseEntity.badRequest().build();
 
     String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
-    User newUser = new User(null, data.name(), data.email(), data.phone(), encryptedPassword);
+    User newUser = new User(null, data.name(), data.email(), data.phone(), encryptedPassword, data.role());
     userRepository.save(newUser);
 
     return ResponseEntity.ok().build();
