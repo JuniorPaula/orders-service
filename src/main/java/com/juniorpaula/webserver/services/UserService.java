@@ -9,8 +9,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.juniorpaula.webserver.entities.User;
+import com.juniorpaula.webserver.entities.enums.UserRole;
 import com.juniorpaula.webserver.repositories.UserRepository;
+import com.juniorpaula.webserver.security.SecurityUtils;
 import com.juniorpaula.webserver.services.exceptions.DatabaseException;
+import com.juniorpaula.webserver.services.exceptions.ForbidenException;
 import com.juniorpaula.webserver.services.exceptions.ResourceNotFoundException;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -42,12 +45,21 @@ public class UserService {
 
   public User update(Long id, User obj) {
     try {
+      validationPermission(id);
+
       User entity = repository.getReferenceById(id);
       updateData(entity, obj);
       return repository.save(entity);
     }
     catch(EntityNotFoundException e) {
       throw new ResourceNotFoundException(id);
+    }
+  }
+
+  private void validationPermission(Long id) {
+    User loggedUser = SecurityUtils.getCurrentUser();
+    if (!loggedUser.getId().equals(id) && !UserRole.ADMIN.equals(loggedUser.getRole())) {
+      throw new ForbidenException();
     }
   }
 
