@@ -36,7 +36,10 @@ public class AuthenticationResouce {
     var auth = authenticationManager.authenticate(userAuthentication);
     var token = tokenService.generateToken((User) auth.getPrincipal());
 
-    return ResponseEntity.ok(new LoginResponseDTO(token));
+    return ResponseEntity.ok(new LoginResponseDTO(token,
+      ((User) auth.getPrincipal()).getName(),
+      ((User) auth.getPrincipal()).getEmail(),
+      ((User) auth.getPrincipal()).getRole().toString()));
   }
 
   @PostMapping(value="/register")
