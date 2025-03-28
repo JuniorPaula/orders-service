@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.juniorpaula.webserver.entities.User;
@@ -55,5 +56,11 @@ public class UserService {
     entity.setEmail(obj.getEmail() != null ? obj.getEmail() : entity.getEmail());
     entity.setPhone(obj.getPhone() != null ? obj.getPhone() : entity.getPhone());
     entity.setRole(obj.getRole() != null ? obj.getRole() : entity.getRole());
+    entity.setPassword(obj.getPassword() != null ? updatePassword(obj.getPassword()) : entity.getPassword());
+  }
+
+  private String updatePassword(String newPassword) {
+    BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    return passwordEncoder.encode(newPassword);
   }
 }
