@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.juniorpaula.webserver.dto.AuthenticationDTO;
+import com.juniorpaula.webserver.dto.LoginResponseDTO;
 import com.juniorpaula.webserver.dto.RegisterDTO;
 import com.juniorpaula.webserver.entities.User;
 import com.juniorpaula.webserver.repositories.UserRepository;
+import com.juniorpaula.webserver.services.TokenService;
 
 @RestController
 @RequestMapping(value = "/auth")
@@ -25,11 +27,16 @@ public class AuthenticationResouce {
   @Autowired
   UserRepository userRepository;
 
+  @Autowired
+  TokenService tokenService;
+
   @PostMapping(value = "/login")
-  public ResponseEntity<Void> login(@RequestBody AuthenticationDTO data) {
+  public ResponseEntity<LoginResponseDTO> login(@RequestBody AuthenticationDTO data) {
     var userAuthentication = new UsernamePasswordAuthenticationToken(data.email(), data.password());
     var auth = authenticationManager.authenticate(userAuthentication);
-    return ResponseEntity.ok().build();
+    var token = tokenService.generateToken((User) auth.getPrincipal());
+
+    return ResponseEntity.ok(new LoginResponseDTO(token));
   }
 
   @PostMapping(value="/register")
@@ -40,7 +47,7 @@ public class AuthenticationResouce {
     String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
     User newUser = new User(null, data.name(), data.email(), data.phone(), encryptedPassword);
     userRepository.save(newUser);
-    
+
     return ResponseEntity.ok().build();
   }
 }
