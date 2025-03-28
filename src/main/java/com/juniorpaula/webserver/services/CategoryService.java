@@ -41,4 +41,9 @@ public class CategoryService {
       throw new ResourceNotFoundException(id);
     }
   }
+
+  public void delete(Long id) {
+    findById(id);
+    repository.deleteById(id);
+  }
 }
