@@ -12,6 +12,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.juniorpaula.webserver.entities.enums.UserRole;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -32,6 +34,7 @@ public class User implements UserDetails {
   private String phone;
   private String password;
 
+  @Enumerated(EnumType.STRING)
   private UserRole role;
 
   @JsonIgnore
