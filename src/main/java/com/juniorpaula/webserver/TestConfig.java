@@ -15,6 +15,7 @@ import com.juniorpaula.webserver.entities.Payment;
 import com.juniorpaula.webserver.entities.Product;
 import com.juniorpaula.webserver.entities.User;
 import com.juniorpaula.webserver.entities.enums.OrderStatus;
+import com.juniorpaula.webserver.entities.enums.UserRole;
 import com.juniorpaula.webserver.repositories.CategoryRepository;
 import com.juniorpaula.webserver.repositories.OrderItemRepository;
 import com.juniorpaula.webserver.repositories.OrderRepository;
@@ -42,8 +43,8 @@ public class TestConfig implements CommandLineRunner {
 
   @Override
   public void run(String... args) throws Exception {
-    User u1 = new User(null, "Maria Brown", "maria@email.com", "988888888", "123456");
-    User u2 = new User(null, "Alex Green", "alex@email.com", "977777777", "123456");
+    User u1 = new User(null, "Maria Brown", "maria@email.com", "988888888", "123456", UserRole.ADMIN);
+    User u2 = new User(null, "Alex Green", "alex@email.com", "977777777", "123456", UserRole.USER);
   
     Order o1 = new Order(null, Instant.parse("2025-02-02T15:42:07Z"), OrderStatus.PAID, u1);
     Order o2 = new Order(null, Instant.parse("2025-02-03T15:42:07Z"), OrderStatus.WAITING_PAYMENT, u2);
