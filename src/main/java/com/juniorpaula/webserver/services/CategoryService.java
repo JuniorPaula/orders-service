@@ -10,6 +10,8 @@ import com.juniorpaula.webserver.entities.Category;
 import com.juniorpaula.webserver.repositories.CategoryRepository;
 import com.juniorpaula.webserver.services.exceptions.ResourceNotFoundException;
 
+import jakarta.persistence.EntityNotFoundException;
+
 @Service
 public class CategoryService {
   
@@ -27,5 +29,16 @@ public class CategoryService {
 
   public Category insert(Category obj) {
     return repository.save(obj);
+  }
+
+  public Category update(Long id, Category obj) {
+    try {
+      Category entity = repository.getReferenceById(id);
+      entity.setName(obj.getName() != null ? obj.getName() : entity.getName());
+      return repository.save(entity);
+    }
+    catch (EntityNotFoundException e) {
+      throw new ResourceNotFoundException(id);
+    }
   }
 }
