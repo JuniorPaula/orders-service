@@ -44,27 +44,32 @@ public class OrderService {
   }
 
   public Order insert(RequestOrderDTO objDto) {
-    Optional<Client> objClient = clientRepository.findById(objDto.clientId());
-    if (!objClient.isPresent()) {
-      throw new ResourceNotFoundException(objDto.clientId());
-    }
-    Client client = objClient.get();
+    Client client = getClient(objDto.clientId());
+    Product product = getProduct(objDto.productId());
 
     Order order = new Order(null, Instant.now(), OrderStatus.WAITING_PAYMENT, client);
-
-    Optional<Product> objProduct = productRepository.findById(objDto.productId());
-    if (!objProduct.isPresent()) {
-      throw new ResourceNotFoundException(objDto.productId());
-    }
-    Product product = objProduct.get();
-
     OrderItem orderItem = new OrderItem(order, product, objDto.quantity(), product.getPrice());
 
     order.getItems().add(orderItem);
     repository.save(order);
-
     orderItemRepository.save(orderItem);
 
     return order;
+  }
+
+  protected Client getClient(Long id) {
+    Optional<Client> objClient = clientRepository.findById(id);
+    if (!objClient.isPresent()) {
+      throw new ResourceNotFoundException(id);
+    }
+    return objClient.get();
+  }
+
+  protected Product getProduct(Long id) {
+    Optional<Product> objProduct = productRepository.findById(id);
+    if (!objProduct.isPresent()) {
+      throw new ResourceNotFoundException(id);
+    }
+    return objProduct.get();
   }
 }
