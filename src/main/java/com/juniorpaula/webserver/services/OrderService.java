@@ -11,6 +11,7 @@ import com.juniorpaula.webserver.dto.RequestOrderDTO;
 import com.juniorpaula.webserver.entities.Client;
 import com.juniorpaula.webserver.entities.Order;
 import com.juniorpaula.webserver.entities.OrderItem;
+import com.juniorpaula.webserver.entities.Payment;
 import com.juniorpaula.webserver.entities.Product;
 import com.juniorpaula.webserver.entities.enums.OrderStatus;
 import com.juniorpaula.webserver.repositories.ClientRepository;
@@ -44,8 +45,8 @@ public class OrderService {
   }
 
   public Order insert(RequestOrderDTO objDto) {
-    Client client = getClient(objDto.clientId());
-    Product product = getProduct(objDto.productId());
+    Client client = getClientById(objDto.clientId());
+    Product product = getProductById(objDto.productId());
 
     Order order = new Order(null, Instant.now(), OrderStatus.WAITING_PAYMENT, client);
     OrderItem orderItem = new OrderItem(order, product, objDto.quantity(), product.getPrice());
@@ -57,7 +58,7 @@ public class OrderService {
     return order;
   }
 
-  protected Client getClient(Long id) {
+  protected Client getClientById(Long id) {
     Optional<Client> objClient = clientRepository.findById(id);
     if (!objClient.isPresent()) {
       throw new ResourceNotFoundException(id);
@@ -65,11 +66,21 @@ public class OrderService {
     return objClient.get();
   }
 
-  protected Product getProduct(Long id) {
+  protected Product getProductById(Long id) {
     Optional<Product> objProduct = productRepository.findById(id);
     if (!objProduct.isPresent()) {
       throw new ResourceNotFoundException(id);
     }
     return objProduct.get();
+  }
+
+  public Order processPayment(Long id) {
+    Order order = findById(id);
+    Payment payment = new Payment(null, Instant.now(), order);
+    order.setPayment(payment);
+    order.setOrderStatus(OrderStatus.PAID);
+
+    repository.save(order);
+    return order;
   }
 }

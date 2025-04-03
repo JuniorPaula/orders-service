@@ -45,4 +45,12 @@ public class OrderResouce {
 
     return ResponseEntity.ok().body(obj);
   }
+
+  @PostMapping(value = "/{id}/payment")
+  public ResponseEntity<Order> processPayment(@PathVariable Long id) {
+
+    Order obj = service.processPayment(id);
+
+    return ResponseEntity.ok().body(obj);
+  }
 }
