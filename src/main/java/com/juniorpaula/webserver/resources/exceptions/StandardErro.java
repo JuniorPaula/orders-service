@@ -2,6 +2,8 @@ package com.juniorpaula.webserver.resources.exceptions;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 public class StandardErro implements Serializable {
 
@@ -12,6 +14,8 @@ public class StandardErro implements Serializable {
   private String error;
   private String message;
   private String path;
+
+  private final List<FieldMessage> errors = new ArrayList<>();
 
   public StandardErro() {
   }
@@ -62,5 +66,13 @@ public class StandardErro implements Serializable {
 
   public void setPath(String path) {
     this.path = path;
+  }
+
+  public List<FieldMessage> getErrors() {
+    return errors;
+  }
+
+  public void addError(String fieldName, String message) {
+    errors.add(new FieldMessage(fieldName, message));
   }
 }
