@@ -41,7 +41,7 @@ public class OrderResouce {
   @PostMapping
   public ResponseEntity<Order> insert(@RequestBody RequestOrderDTO request) {
 
-    Order obj = service.insert(request.productId(), request.quantity());
+    Order obj = service.insert(request);
 
     return ResponseEntity.ok().body(obj);
   }

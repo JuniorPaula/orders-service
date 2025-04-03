@@ -1,11 +1,16 @@
 package com.juniorpaula.webserver.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -21,9 +26,9 @@ public class Client implements Serializable {
   private String email;
   private String phone;
 
-  // @JsonIgnore
-  // @OneToMany(mappedBy = "client") // volta aqui
-  // private final List<Order> orders = new ArrayList<>();
+  @JsonIgnore
+  @OneToMany(mappedBy = "client")
+  private final List<Order> orders = new ArrayList<>();
 
   public Client() {
   }
@@ -67,9 +72,9 @@ public class Client implements Serializable {
     this.phone = phone;
   }
 
-  // public List<Order> getOrders() {
-  //   return orders;
-  // }
+  public List<Order> getOrders() {
+    return orders;
+  }
 
   @Override
   public int hashCode() {

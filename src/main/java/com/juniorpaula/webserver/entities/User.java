@@ -1,6 +1,5 @@
 package com.juniorpaula.webserver.entities;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -8,7 +7,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.juniorpaula.webserver.entities.enums.UserRole;
 
 import jakarta.persistence.Entity;
@@ -17,7 +15,6 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -36,10 +33,6 @@ public class User implements UserDetails {
 
   @Enumerated(EnumType.STRING)
   private UserRole role;
-
-  @JsonIgnore
-  @OneToMany(mappedBy = "client")
-  private final List<Order> orders = new ArrayList<>();
 
   public User() {
   }
@@ -100,10 +93,6 @@ public class User implements UserDetails {
 
   public void setRole(UserRole role) {
     this.role = role;
-  }
-
-  public List<Order> getOrders() {
-    return orders;
   }
 
   @Override
