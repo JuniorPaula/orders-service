@@ -29,7 +29,7 @@ public class ProductService {
 
   public Product findById(Long id) {
     Optional<Product> obj = repository.findById(id);
-    return obj.get();
+    return obj.orElseThrow(() -> new ResourceNotFoundException(id));
   }
 
   public Product insert(ProductDTO obj) {
@@ -66,5 +66,10 @@ public class ProductService {
       Category category = categoryService.findById(id);
       entity.getCategories().add(category);
     }
+  }
+
+  public void delete(Long id) {
+    findById(id);
+    repository.deleteById(id);
   }
 }
