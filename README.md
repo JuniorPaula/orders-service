@@ -36,45 +36,11 @@ Foi desenvolvido com base em uma estrutura de domínio bem definida, onde os rel
 
 ![Modelo de Domínio](./src/main/resources/static/domain-model.png)
 
-As principais entidades e seus relacionamentos são:
-
-### 🧑‍💼 User
-- `id`, `name`, `email`, `phone`, `password`
-- Relacionamento: **1:N com Order**
-
-### 🛒 Order
-- `id`, `moment`, `orderStatus`
-- Relacionamento: 
-  - **N:1 com User**
-  - **1:N com OrderItem**
-  - **1:1 com Payment**
-
-### 📦 Product
-- `id`, `name`, `description`, `price`, `imgUrl`
-- Relacionamento:
-  - **N:M com Category**
-  - **1:N com OrderItem**
-
-### 🏷️ Category
-- `id`, `name`
-- Relacionamento: **N:M com Product**
-
-### 📥 OrderItem
-- `quantity`, `price`
-- Chave composta com **Order + Product**
-- Método auxiliar: `subTotal()`
-
-### 💳 Payment
-- `id`, `moment`
-- Relacionamento: **1:1 com Order**
-
-### 🧾 OrderStatus (enum)
-- `WAITING_PAYMENT`, `PAID`, `SHIPPED`, `DELIVERED`, `CANCELED`
-
----
 
 ## 🚀 Funcionalidades da API
 
+- Autenticação
+- Sistema de roles e papeis - ADMIN e USER
 - Criar e listar usuários
 - Cadastrar produtos e associar a múltiplas categorias
 - Criar pedidos com itens e calcular totais

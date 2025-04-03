@@ -9,25 +9,24 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import com.juniorpaula.webserver.entities.Category;
+import com.juniorpaula.webserver.entities.Client;
 import com.juniorpaula.webserver.entities.Order;
 import com.juniorpaula.webserver.entities.OrderItem;
 import com.juniorpaula.webserver.entities.Payment;
 import com.juniorpaula.webserver.entities.Product;
-import com.juniorpaula.webserver.entities.User;
 import com.juniorpaula.webserver.entities.enums.OrderStatus;
-import com.juniorpaula.webserver.entities.enums.UserRole;
 import com.juniorpaula.webserver.repositories.CategoryRepository;
+import com.juniorpaula.webserver.repositories.ClientRepository;
 import com.juniorpaula.webserver.repositories.OrderItemRepository;
 import com.juniorpaula.webserver.repositories.OrderRepository;
 import com.juniorpaula.webserver.repositories.ProductRepository;
-import com.juniorpaula.webserver.repositories.UserRepository;
 
 @Configuration
 @Profile("test")
 public class TestConfig implements CommandLineRunner {
   
   @Autowired
-  private UserRepository userRepository;
+  private ClientRepository clientRepository;
 
   @Autowired
   private OrderRepository orderRepository;
@@ -43,8 +42,8 @@ public class TestConfig implements CommandLineRunner {
 
   @Override
   public void run(String... args) throws Exception {
-    User u1 = new User(null, "Maria Brown", "maria@email.com", "988888888", "123456", UserRole.ADMIN);
-    User u2 = new User(null, "Alex Green", "alex@email.com", "977777777", "123456", UserRole.USER);
+    Client u1 = new Client(null, "Maria Brown", "maria@email.com", "988888888");
+    Client u2 = new Client(null, "Alex Green", "alex@email.com", "977777777");
   
     Order o1 = new Order(null, Instant.parse("2025-02-02T15:42:07Z"), OrderStatus.PAID, u1);
     Order o2 = new Order(null, Instant.parse("2025-02-03T15:42:07Z"), OrderStatus.WAITING_PAYMENT, u2);
@@ -60,7 +59,7 @@ public class TestConfig implements CommandLineRunner {
     Product p4 = new Product(null, "PC Gamer", "Donec aliquet odio ac rhoncus cursus.", 1200.0, "");
     Product p5 = new Product(null, "Rails for Dummies", "Cras fringilla convallis sem vel faucibus.", 100.99, "");
 
-    userRepository.saveAll(Arrays.asList(u1, u2));
+    clientRepository.saveAll(Arrays.asList(u1, u2));
     orderRepository.saveAll(Arrays.asList(o1, o2, o3));
     categoryRepository.saveAll(Arrays.asList(cat1, cat2, cat3));
     productRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p5));
